@@ -15,5 +15,12 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 
-SOURCES += tst_baldalogictest.cpp
+SOURCES += tst_baldalogictest.cpp \
+    ../Balda/gamelogic.cpp \
+    ../Balda/fileloader.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
+
+HEADERS += \
+    ../Balda/matrix.h \
+    ../Balda/gamelogic.h \
+    ../Balda/fileloader.h
