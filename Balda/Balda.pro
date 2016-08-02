@@ -11,10 +11,13 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = Balda
 TEMPLATE = app
 
+CONFIG += c++14
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    fileloader.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    fileloader.h
 
 FORMS    += mainwindow.ui
