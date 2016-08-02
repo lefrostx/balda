@@ -13,6 +13,7 @@ public:
 private Q_SLOTS:
     void testFileNotExists();
     void testFileCanOpenForRead();
+    void testFileCorrectReading();
 };
 
 BaldaTestFileLoaderTest::BaldaTestFileLoaderTest()
@@ -32,6 +33,17 @@ void BaldaTestFileLoaderTest::testFileCanOpenForRead()
     using GameBalda::FileLoader;
 
     QVERIFY_EXCEPTION_THROWN(FileLoader{"notforreadfile.txt"}, FileLoader::FileCannotOpenForRead);
+}
+
+void BaldaTestFileLoaderTest::testFileCorrectReading()
+{
+    using GameBalda::FileLoader;
+
+    FileLoader loader{"testfile.txt"};
+    QStringList expectingList{"first", "second", "third", ""};
+    QStringList actualList = loader.contentList();
+
+    QCOMPARE(actualList, expectingList);
 }
 
 QTEST_APPLESS_MAIN(BaldaTestFileLoaderTest)
