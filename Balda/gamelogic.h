@@ -16,10 +16,10 @@ namespace GameBalda {
 
     private:
         bool isFreeCell(const ClarensMath::Matrix<QChar> & arena, int row, int col) const;
+        bool isNearLetter(const ClarensMath::Matrix<QChar> & arena, int row, int col) const;
+        bool isInRange(const ClarensMath::Matrix<QChar> & arena, int row, int col) const;
 
         QStringList fileWords;
-
-
     };
 
 }
