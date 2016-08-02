@@ -10,10 +10,15 @@ QT       -= gui
 
 TARGET = tst_baldatestfileloadertest
 CONFIG   += console
+CONFIG   += c++14
 CONFIG   -= app_bundle
 
 TEMPLATE = app
 
 
-SOURCES += tst_baldatestfileloadertest.cpp
+SOURCES += tst_baldatestfileloadertest.cpp \
+    ../Balda/fileloader.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
+
+HEADERS += \
+    ../Balda/fileloader.h
