@@ -8,6 +8,7 @@ namespace GameBalda {
     class FileLoader {
     public:
         class FileNotExistsException {};
+        class FileCannotOpenForRead {};
 
         FileLoader(const QString & filename);
     };

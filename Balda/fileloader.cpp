@@ -7,4 +7,7 @@ GameBalda::FileLoader::FileLoader(const QString &filename)
     QFile file{filename};
     if (!file.exists())
         throw FileNotExistsException{};
+
+    if (!file.open(QIODevice::ReadOnly))
+        throw FileCannotOpenForRead{};
 }
