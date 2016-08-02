@@ -10,4 +10,13 @@ GameBalda::FileLoader::FileLoader(const QString &filename)
 
     if (!file.open(QIODevice::ReadOnly))
         throw FileCannotOpenForRead{};
+
+    QTextStream readingStream(&file);
+    fileContent = readingStream.readAll();
+    file.close();
+}
+
+QStringList GameBalda::FileLoader::contentList() const
+{
+    return fileContent.split('\n');
 }

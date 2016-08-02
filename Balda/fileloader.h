@@ -1,7 +1,7 @@
 #ifndef FILELOADER_H
 #define FILELOADER_H
 
-#include <QString>
+#include <QStringList>
 
 namespace GameBalda {
 
@@ -11,6 +11,9 @@ namespace GameBalda {
         class FileCannotOpenForRead {};
 
         FileLoader(const QString & filename);
+        QStringList contentList() const;
+    private:
+        QString fileContent;
     };
 
 }
