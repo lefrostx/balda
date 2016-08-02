@@ -15,9 +15,11 @@ CONFIG += c++14
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    fileloader.cpp
+    fileloader.cpp \
+    gamelogic.cpp
 
 HEADERS  += mainwindow.h \
-    fileloader.h
+    fileloader.h \
+    gamelogic.h
 
 FORMS    += mainwindow.ui
