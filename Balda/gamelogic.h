@@ -17,7 +17,7 @@ namespace GameBalda {
 
     inline bool operator == (const SearchResult& lhs, const SearchResult& rhs)
     {
-        return lhs.letter == rhs.letter && lhs.cell == rhs.cell && lhs.word == rhs.word;
+        return lhs.word == rhs.word;
     }
 
     inline bool operator != (const SearchResult& lhs, const SearchResult& rhs)
@@ -25,12 +25,16 @@ namespace GameBalda {
         return !(lhs == rhs);
     }
 
+    inline bool operator < (const SearchResult& lhs, const SearchResult& rhs)
+    {
+        return lhs.word.length() < rhs.word.length();
+    }
+
     class GameLogic {
         friend BaldaLogicTest;
     public:
         GameLogic(const QString & filename);
         std::vector<SearchResult> makeWordsList(const ClarensMath::Matrix<QChar> & gameArena);
-        QStringList findWordsList(const ClarensMath::Matrix<QChar> & arena) const;
 
     private:
         void recursionSearch(ClarensMath::Cell cell, const QString & path);

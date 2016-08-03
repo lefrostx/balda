@@ -29,9 +29,10 @@ std::vector<GameBalda::SearchResult> GameBalda::GameLogic::makeWordsList(const C
         }
     }
 
-
     auto iter = std::unique(resultList.begin(), resultList.end());
     resultList.resize(std::distance(resultList.begin(), iter));
+    std::sort(resultList.begin(), resultList.end());
+    std::reverse(resultList.begin(), resultList.end());
 
     return resultList;
 }
