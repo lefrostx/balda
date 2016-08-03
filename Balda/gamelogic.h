@@ -2,6 +2,7 @@
 #define GAMELOGIC_H
 
 #include <vector>
+#include <set>
 #include <QStringList>
 #include "matrix.h"
 
@@ -27,7 +28,11 @@ namespace GameBalda {
 
     inline bool operator < (const SearchResult& lhs, const SearchResult& rhs)
     {
-        return lhs.word.length() < rhs.word.length();
+        if (lhs.word.length() > rhs.word.length())
+            return true;
+        else if (lhs.word.length() == rhs.word.length())
+            return lhs.word < rhs.word;
+        else return false;
     }
 
     class GameLogic {
@@ -42,13 +47,16 @@ namespace GameBalda {
         bool isLetterCell(const ClarensMath::Matrix<QChar> & arena, int row, int col) const;
         bool isNearLetter(const ClarensMath::Matrix<QChar> & arena, int row, int col) const;
         bool isInRange(const ClarensMath::Matrix<QChar> & arena, int row, int col) const;
+        bool prefixExists(const QString& word);
 
-        QStringList fileWords;
+        std::set<QString> fileWords;
+        std::vector< std::set<QString> > prefixes;
         std::vector<SearchResult> resultList;
         ClarensMath::Matrix<QChar> arena{5, 5, ' '};
         ClarensMath::Matrix<bool> usedArena{5, 5, false};
         ClarensMath::Cell bindingCell;
         bool usedBindingCell{false};
+        static const int maxPrefixLength = 10;
     };
 
 }

@@ -39,5 +39,6 @@ void MainWindow::findWords()
     for (auto x : result) {
         words += QString(x.letter) + "\t" + QString::number(x.cell.row) + " " + QString::number(x.cell.col) + "\t"  + x.word + "\n";
     }
+    ui->foundWordsText->clear();
     ui->foundWordsText->setText(words);
 }
