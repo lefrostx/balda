@@ -1,8 +1,9 @@
 #ifndef GAMELOGIC_H
 #define GAMELOGIC_H
 
-#include <vector>
-#include <set>
+#include <QtCore>
+#include <QVector>
+#include <QSet>
 #include <QStringList>
 #include "matrix.h"
 
@@ -26,6 +27,11 @@ namespace GameBalda {
         return !(lhs == rhs);
     }
 
+    inline uint qHash(const SearchResult &key, uint seed)
+    {
+          return qHash(key.word, seed);
+    }
+
     inline bool operator < (const SearchResult& lhs, const SearchResult& rhs)
     {
         if (lhs.word.length() > rhs.word.length())
@@ -39,7 +45,7 @@ namespace GameBalda {
         friend BaldaLogicTest;
     public:
         GameLogic(const QString & filename);
-        std::vector<SearchResult> makeWordsList(const ClarensMath::Matrix<QChar> & gameArena);
+        QVector<SearchResult> makeWordsList(const ClarensMath::Matrix<QChar> & gameArena);
 
     private:
         void recursionSearch(ClarensMath::Cell cell, const QString & path);
@@ -49,9 +55,9 @@ namespace GameBalda {
         bool isInRange(const ClarensMath::Matrix<QChar> & arena, int row, int col) const;
         bool prefixExists(const QString& word);
 
-        std::set<QString> fileWords;
-        std::vector< std::set<QString> > prefixes;
-        std::vector<SearchResult> resultList;
+        QSet<QString> fileWords;
+        QVector< QSet<QString> > prefixes;
+        QVector<SearchResult> resultList;
         ClarensMath::Matrix<QChar> arena{5, 5, ' '};
         ClarensMath::Matrix<bool> usedArena{5, 5, false};
         ClarensMath::Cell bindingCell;

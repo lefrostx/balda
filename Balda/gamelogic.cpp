@@ -1,5 +1,3 @@
-#include <algorithm>
-#include <set>
 #include "gamelogic.h"
 #include "fileloader.h"
 
@@ -16,10 +14,11 @@ GameBalda::GameLogic::GameLogic(const QString &filename) :
         }
     }
 
-    fileWords.insert(lst.begin(), lst.end());
+    for (const auto & x : lst)
+        fileWords.insert(x);
 }
 
-std::vector<GameBalda::SearchResult> GameBalda::GameLogic::makeWordsList(const ClarensMath::Matrix<QChar> &gameArena)
+QVector<GameBalda::SearchResult> GameBalda::GameLogic::makeWordsList(const ClarensMath::Matrix<QChar> &gameArena)
 {
     arena = gameArena;
     resultList.clear();
@@ -41,9 +40,15 @@ std::vector<GameBalda::SearchResult> GameBalda::GameLogic::makeWordsList(const C
         }
     }
 
-    std::set<SearchResult> tempSet{resultList.begin(), resultList.end()};
+    QSet<SearchResult> tempSe;
+    for (const auto & x : resultList)
+        tempSe.insert(x);
 
-    return std::vector<SearchResult>{tempSet.begin(), tempSet.end()};
+    QVector<SearchResult> result;
+    for (const auto & x : tempSe)
+        result.push_back(x);
+
+    return result;
 }
 
 void GameBalda::GameLogic::recursionSearch(ClarensMath::Cell cell, const QString &path)
@@ -64,7 +69,7 @@ void GameBalda::GameLogic::recursionSearch(ClarensMath::Cell cell, const QString
 
     usedArena[cell] = true;
 
-    if (usedBindingCell && fileWords.find(newPath) != fileWords.end()) {
+    if (usedBindingCell && fileWords.contains(newPath)) {
         resultList.push_back({arena[bindingCell], bindingCell, newPath});
     }
 
@@ -121,5 +126,5 @@ bool GameBalda::GameLogic::prefixExists(const QString &word)
     if (word.size() > maxPrefixLength)
         return true;
 
-    return prefixes[word.size() - 1].find(word) != prefixes[word.size() - 1].end();
+    return prefixes[word.size() - 1].contains(word);
 }

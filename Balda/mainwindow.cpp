@@ -34,7 +34,7 @@ void MainWindow::findWords()
             QChar letter = ui->gameTable->item(row, col)->text()[0];
             gameArena(row, col) = letter;
         }
-    auto result = logic.makeWordsList(gameArena);
+    QVector<GameBalda::SearchResult> result = logic.makeWordsList(gameArena);
     QString words;
     for (auto x : result) {
         words += QString(x.letter) + "\t" + QString::number(x.cell.row) + " " + QString::number(x.cell.col) + "\t"  + x.word + "\n";
