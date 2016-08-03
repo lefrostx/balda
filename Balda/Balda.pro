@@ -20,6 +20,7 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     fileloader.h \
-    gamelogic.h
+    gamelogic.h \
+    matrix.h
 
 FORMS    += mainwindow.ui

@@ -11,6 +11,16 @@ namespace ClarensMath {
         int col;
     };
 
+    inline bool operator == (const Cell& lhs, const Cell& rhs)
+    {
+        return lhs.row == rhs.row && lhs.col == rhs.col;
+    }
+
+    inline bool operator != (const Cell& lhs, const Cell& rhs)
+    {
+        return !(lhs == rhs);
+    }
+
     template<typename T>
     class Matrix {
     public:
@@ -27,6 +37,9 @@ namespace ClarensMath {
         int cols() const;
         reference       operator()(int row, int col);
         const_reference operator()(int row, int col) const;
+        reference       operator[](Cell cell);
+        const_reference operator[](Cell cell) const;
+
         iterator        begin();
         iterator        end();
         const_iterator  begin() const;
@@ -78,6 +91,18 @@ namespace ClarensMath {
     inline typename Matrix<T>::const_reference Matrix<T>::operator()(int row, int col) const
     {
         return index(row, col);
+    }
+
+    template<typename T>
+    inline typename Matrix<T>::reference Matrix<T>::operator[](Cell cell)
+    {
+        return index(cell.row, cell.col);
+    }
+
+    template<typename T>
+    inline typename Matrix<T>::const_reference Matrix<T>::operator[](Cell cell) const
+    {
+        return index(cell.row, cell.col);
     }
 
     template<typename T>
