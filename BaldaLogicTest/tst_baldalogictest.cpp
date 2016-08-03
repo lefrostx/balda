@@ -1,5 +1,6 @@
 #include <QString>
 #include <QtTest>
+#include <vector>
 
 #include "../Balda/matrix.h"
 #include "../Balda/gamelogic.h"
@@ -16,30 +17,23 @@ private:
     ClarensMath::Matrix<QChar> gameArena{5, 5, ' '};
 
 private Q_SLOTS:
-    void testCorrectResult();
     void testFreeCellTrue();
     void testFreeCellFalse();
     void testNearIsLetterTrue();
     void testNearIsLetterFalse();
     void testCellInRangeTrue();
     void testCellInRangeFalse();
+    void testCorrectResultList();
+    void testCorrectResursionSearch();
 };
 
 BaldaLogicTest::BaldaLogicTest()
 {
-    gameArena(2, 0) = 'Б';
-    gameArena(2, 1) = 'А';
-    gameArena(2, 2) = 'Л';
-    gameArena(2, 3) = 'Д';
-    gameArena(2, 4) = 'А';
-}
-
-void BaldaLogicTest::testCorrectResult()
-{
-    QStringList actualList = logic.findWordsList(gameArena);
-    QStringList expectList{"ФАЛДА", ""};
-
-    QCOMPARE(actualList, expectList);
+    gameArena(2, 0) = L'Б';
+    gameArena(2, 1) = L'А';
+    gameArena(2, 2) = L'Л';
+    gameArena(2, 3) = L'Д';
+    gameArena(2, 4) = L'А';
 }
 
 void BaldaLogicTest::testFreeCellTrue()
@@ -70,6 +64,53 @@ void BaldaLogicTest::testCellInRangeTrue()
 void BaldaLogicTest::testCellInRangeFalse()
 {
     QVERIFY(!logic.isInRange(gameArena, 5, 5));
+}
+
+void BaldaLogicTest::testCorrectResultList()
+{
+    using GameBalda::SearchResult;
+    GameBalda::GameLogic logic{"baldafile.txt"};
+    ClarensMath::Matrix<QChar> gameArena{5, 5, ' '};
+    gameArena(2, 0) = L'Б';
+    gameArena(2, 1) = L'А';
+    gameArena(2, 2) = L'Л';
+    gameArena(2, 3) = L'Д';
+    gameArena(2, 4) = L'А';
+
+    std::vector<SearchResult> actualList = logic.makeWordsList(gameArena);
+    std::vector<SearchResult> expectList;
+
+    expectList.push_back(SearchResult{L'А', {1, 0}, "АБА" });
+    expectList.push_back(SearchResult{L'А', {3, 0}, "АБА" });
+
+    QCOMPARE(actualList, expectList);
+    logic.arena(1, 0)  = ' ';
+}
+
+void BaldaLogicTest::testCorrectResursionSearch()
+{
+    using GameBalda::SearchResult;
+    GameBalda::GameLogic logic{"baldafile.txt"};
+    ClarensMath::Matrix<QChar> gameArena{5, 5, ' '};
+    gameArena(2, 0) = L'Б';
+    gameArena(2, 1) = L'А';
+    gameArena(2, 2) = L'Л';
+    gameArena(2, 3) = L'Д';
+    gameArena(2, 4) = L'А';
+    gameArena(0, 4) = L'А';
+    gameArena(1, 4) = L'Б';
+    gameArena(3, 4) = L'Р';
+    logic.arena = gameArena;
+    logic.bindingCell = ClarensMath::Cell{0, 4};
+
+    logic.recursionSearch({2, 4}, "");
+    std::vector<SearchResult> actualList = logic.resultList;
+    std::vector<SearchResult> expectList;
+
+    expectList.push_back(SearchResult{L'А', {0, 4}, "АБА" });
+
+    QCOMPARE(actualList, expectList);
+    logic.arena(1, 0)  = ' ';
 }
 
 QTEST_APPLESS_MAIN(BaldaLogicTest)
