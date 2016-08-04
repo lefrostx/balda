@@ -40,8 +40,8 @@ void BaldaTestFileLoaderTest::testFileCorrectReading()
     using GameBalda::FileLoader;
 
     FileLoader loader{"testfile.txt"};
-    QStringList expectingList{"first", "second", "third", ""};
-    QStringList actualList = loader.contentList();
+    QStringList expectingList{"first", "second", "third"};
+    QStringList actualList = loader.content();
 
     QCOMPARE(actualList, expectingList);
 }

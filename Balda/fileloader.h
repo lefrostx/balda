@@ -11,7 +11,7 @@ namespace GameBalda {
         class FileCannotOpenForRead {};
 
         FileLoader(const QString & filename);
-        QStringList contentList() const;
+        QStringList content() const;
     private:
         QString fileContent;
     };

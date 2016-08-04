@@ -37,7 +37,10 @@ void MainWindow::findWords()
     QVector<GameBalda::SearchResult> result = logic.makeWordsList(gameArena);
     QString words;
     for (auto x : result) {
-        words += QString(x.letter) + "\t" + QString::number(x.cell.row) + " " + QString::number(x.cell.col) + "\t"  + x.word + "\n";
+        words += QString(x.letter) + "\t" +
+                QString::number(x.cell.row + 1) + " " +
+                QString::number(x.cell.col + 1) + "\t" +
+                x.word + "\n";
     }
     ui->foundWordsText->clear();
     ui->foundWordsText->setText(words);

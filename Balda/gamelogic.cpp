@@ -4,13 +4,13 @@
 GameBalda::GameLogic::GameLogic(const QString &filename) :
     prefixes(maxPrefixLength)
 {
-    QStringList lst = FileLoader{filename}.contentList();
+    QStringList lst = FileLoader{filename}.content();
 
     for (int i = 0; i < maxPrefixLength; ++i) {
-        int length = i + 1;
+        int prefixLength = i + 1;
         for (const auto & x : lst) {
-            if (x.size() >= length)
-                prefixes[i].insert(x.left(length));
+            if (x.size() >= prefixLength)
+                prefixes[i].insert(x.left(prefixLength));
         }
     }
 
@@ -25,35 +25,26 @@ QVector<GameBalda::SearchResult> GameBalda::GameLogic::makeWordsList(const Clare
     QString alphabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЧШЩЪЫЬЭЮЯ";
     for (int row = 0; row < arena.rows(); ++row) {
         for (int col = 0; col < arena.cols(); ++col) {
+
             if (isFreeCell(arena, row, col) && isNearLetter(arena, row, col)) {
                 bindingCell = ClarensMath::Cell{row, col};
                 for (auto x : alphabet) {
                     arena[bindingCell] = x;
-                    for (int rw = 0; rw < arena.rows(); ++rw)
-                        for (int cl = 0; cl < arena.cols(); ++cl) {
-                            usedBindingCell = false;
-                            recursionSearch(ClarensMath::Cell{rw, cl}, "");
-                        }
+                    findWords();
                     arena[bindingCell] = L' ';
                 }
             }
         }
     }
 
-    QSet<SearchResult> tempSe;
-    for (const auto & x : resultList)
-        tempSe.insert(x);
+    std::sort(resultList.begin(), resultList.end());
+    auto uniqueEndIter = std::unique(resultList.begin(), resultList.end());
+    resultList.resize(std::distance(resultList.begin(), uniqueEndIter));
 
-    QVector<SearchResult> result;
-    for (const auto & x : tempSe)
-        result.push_back(x);
-
-    std::sort(result.begin(), result.end());
-
-    return result;
+    return resultList;
 }
 
-void GameBalda::GameLogic::recursionSearch(ClarensMath::Cell cell, const QString &path)
+void GameBalda::GameLogic::search(ClarensMath::Cell cell, const QString &path)
 {
     if (!isLetterCell(arena, cell.row, cell.col))
         return;
@@ -75,14 +66,23 @@ void GameBalda::GameLogic::recursionSearch(ClarensMath::Cell cell, const QString
         resultList.push_back({arena[bindingCell], bindingCell, newPath});
     }
 
-    recursionSearch(ClarensMath::Cell{cell.row - 1, cell.col}, newPath);
-    recursionSearch(ClarensMath::Cell{cell.row + 1, cell.col}, newPath);
-    recursionSearch(ClarensMath::Cell{cell.row, cell.col - 1}, newPath);
-    recursionSearch(ClarensMath::Cell{cell.row, cell.col + 1}, newPath);
+    search(ClarensMath::Cell{cell.row - 1, cell.col}, newPath);
+    search(ClarensMath::Cell{cell.row + 1, cell.col}, newPath);
+    search(ClarensMath::Cell{cell.row, cell.col - 1}, newPath);
+    search(ClarensMath::Cell{cell.row, cell.col + 1}, newPath);
 
     usedArena[cell] = false;
     if (cell == bindingCell)
         usedBindingCell = false;
+}
+
+void GameBalda::GameLogic::findWords()
+{
+    for (int row = 0; row < arena.rows(); ++row)
+        for (int col = 0; col < arena.cols(); ++col) {
+            usedBindingCell = false;
+            search(ClarensMath::Cell{row, col}, "");
+        }
 }
 
 bool GameBalda::GameLogic::isFreeCell(const ClarensMath::Matrix<QChar> &arena, int row, int col) const

@@ -16,7 +16,7 @@ GameBalda::FileLoader::FileLoader(const QString &filename)
     file.close();
 }
 
-QStringList GameBalda::FileLoader::contentList() const
+QStringList GameBalda::FileLoader::content() const
 {
     return fileContent.split("\r\n");
 }
