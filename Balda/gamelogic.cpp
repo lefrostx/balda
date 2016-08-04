@@ -48,6 +48,8 @@ QVector<GameBalda::SearchResult> GameBalda::GameLogic::makeWordsList(const Clare
     for (const auto & x : tempSe)
         result.push_back(x);
 
+    std::sort(result.begin(), result.end());
+
     return result;
 }
 
