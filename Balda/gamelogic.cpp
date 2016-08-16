@@ -44,7 +44,7 @@ QVector<GameBalda::SearchResult> GameBalda::GameLogic::makeWordsList(const Clare
     return resultList;
 }
 
-void GameBalda::GameLogic::search(ClarensMath::Cell cell, const QString &path)
+void GameBalda::GameLogic::search(ClarensMath::Cell cell, QString path)
 {
     if (!isLetterCell(arena, cell.row, cell.col))
         return;
@@ -52,9 +52,9 @@ void GameBalda::GameLogic::search(ClarensMath::Cell cell, const QString &path)
     if (usedArena[cell])
         return;
 
-    QString newPath = path + arena[cell];
+    path += arena[cell];
 
-    if (!prefixExists(newPath))
+    if (!prefixExists(path))
         return;
 
     if (cell == bindingCell)
@@ -62,14 +62,14 @@ void GameBalda::GameLogic::search(ClarensMath::Cell cell, const QString &path)
 
     usedArena[cell] = true;
 
-    if (usedBindingCell && fileWords.contains(newPath)) {
-        resultList.push_back({arena[bindingCell], bindingCell, newPath});
+    if (usedBindingCell && fileWords.contains(path)) {
+        resultList.push_back({arena[bindingCell], bindingCell, path});
     }
 
-    search(ClarensMath::Cell{cell.row - 1, cell.col}, newPath);
-    search(ClarensMath::Cell{cell.row + 1, cell.col}, newPath);
-    search(ClarensMath::Cell{cell.row, cell.col - 1}, newPath);
-    search(ClarensMath::Cell{cell.row, cell.col + 1}, newPath);
+    search(ClarensMath::Cell{cell.row - 1, cell.col}, path);
+    search(ClarensMath::Cell{cell.row + 1, cell.col}, path);
+    search(ClarensMath::Cell{cell.row, cell.col - 1}, path);
+    search(ClarensMath::Cell{cell.row, cell.col + 1}, path);
 
     usedArena[cell] = false;
     if (cell == bindingCell)

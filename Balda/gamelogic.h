@@ -48,7 +48,7 @@ namespace GameBalda {
         QVector<SearchResult> makeWordsList(const ClarensMath::Matrix<QChar> & gameArena);
 
     private:
-        void search(ClarensMath::Cell cell, const QString & path);
+        void search(ClarensMath::Cell cell, QString path);
         void findWords();
         bool isFreeCell(const ClarensMath::Matrix<QChar> & arena, int row, int col) const;
         bool isLetterCell(const ClarensMath::Matrix<QChar> & arena, int row, int col) const;

@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     for (int row = 0; row < 5; ++row)
         for (int col = 0; col < 5; ++col) {
             QTableWidgetItem *newItem = new QTableWidgetItem(" ");
+            newItem->setTextAlignment(Qt::AlignCenter);
             ui->gameTable->setItem(row, col, newItem);
         }
     ui->gameTable->item(2, 0)->setText("Б");
@@ -37,9 +38,9 @@ void MainWindow::findWords()
     QVector<GameBalda::SearchResult> result = logic.makeWordsList(gameArena);
     QString words;
     for (auto x : result) {
-        words += QString(x.letter) + "\t" +
-                QString::number(x.cell.row + 1) + " " +
-                QString::number(x.cell.col + 1) + "\t" +
+        words += QString(x.letter) +
+                "\t" + QString::number(x.cell.row + 1) +
+                " " + QString::number(x.cell.col + 1) + "\t" +
                 x.word + "\n";
     }
     ui->foundWordsText->clear();
